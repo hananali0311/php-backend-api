@@ -1,0 +1,13 @@
+version: 0.2
+phases:
+  install:
+    commands:
+      - apt-get update -y
+      - apt-get install -y zip unzip php php-cli composer
+      - composer install
+  build:
+    commands:
+      - echo "Build successful!"
+artifacts:
+  files:
+    - '**/*'
