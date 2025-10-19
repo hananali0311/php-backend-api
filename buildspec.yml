@@ -1,13 +1,35 @@
 version: 0.2
+
 phases:
   install:
     commands:
+      - echo "=== INSTALL PHASE STARTED ==="
       - apt-get update -y
-      - apt-get install -y zip unzip php php-cli composer
-      - composer install
+      - apt-get install -y zip unzip
+      - echo "Installing PHP and Composer (for build testing)"
+      - apt-get install -y php-cli curl
+      - php -v
+      - echo "=== INSTALL PHASE COMPLETED ==="
+  pre_build:
+    commands:
+      - echo "=== PRE-BUILD PHASE STARTED ==="
+      - echo "Listing repo files:"
+      - ls -la
+      - echo "=== PRE-BUILD PHASE COMPLETED ==="
   build:
     commands:
-      - echo "Build successful!"
+      - echo "=== BUILD PHASE STARTED ==="
+      - echo "Zipping source files for deployment"
+      - zip -r app.zip . -x "*.git*"
+      - echo "=== BUILD PHASE COMPLETED ==="
+  post_build:
+    commands:
+      - echo "=== POST-BUILD PHASE STARTED ==="
+      - echo "Build completed successfully. Preparing artifacts."
+      - echo "=== POST-BUILD PHASE COMPLETED ==="
+
 artifacts:
   files:
-    - '**/*'
+    - app.zip
+    - appspec.yml
+    - scripts/**/*
